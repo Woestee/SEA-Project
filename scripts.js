@@ -23,6 +23,90 @@
  *
  */
 
+const races = [ // Array of objects
+  {id: 1, // Primary key
+    season: 2021,
+    date: "2021-11-14",
+    raceName: "Sao Paulo Grand Prix",
+    circuit: "Interlagos",
+    country: "Brazil",
+    winnerDriver: "Lewis Hamilton",
+    winnerTeam: "Mercedes",
+    laps: 71,
+    fastestLap: "1:11.010",
+    weather: "Dry",
+  },
+  {id: 2,
+    season: 2021,
+    date: "2021-07-18",
+    raceName: "British Grand Prix",
+    circuit: "Silverstone",
+    country: "United Kingdom",
+    winnerDriver: "Lewis Hamilton",
+    winnerTeam: "Mercedes",
+    laps: 52,
+    fastestLap: "1:28.617",
+    weather: "Dry",
+  },
+  {id: 3,
+    season: 2022,
+    raceName: "Japanese Grand Prix",
+    circuit: "Suzuka",
+    country: "Japan",
+    winnerDriver: "Max Verstappen",
+    winnerTeam: "Red Bull Racing",
+    laps: 28,
+    fastestLap: "1:44.411",
+    weather: "Wet",
+  }
+];
+
+let filteredRaces = [...races]; // Copy data with spread operator
+
+function renderRaces(raceArray) { // Renders array
+  const cardContainer = document.getElementById("card-container");
+  cardContainer.innerHTML = ""; // Clears exisitng content
+
+  for (let i = 0; i < raceArray.length; i++) { // Iterates through array
+    const race = raceArray[i];
+
+    const card = document.createElement("div"); // Dynamic DOM creation
+    card.classList.add("card"); // Adds CSS class
+
+    // Injects object data into HTML
+    card.innerHTML = `
+      <div class="card-content">
+        <h3>${race.season} ${race.raceName}</h3>
+        <p>Date: ${race.date}</p>
+        <p>Circuit: ${race.circuit}</p>
+        <p>Winner: ${race.winnerDriver}</p>
+        <p>Team: ${race.winnerTeam}</p>
+        <p>Laps: ${race.laps}</p>
+        <p>Fastest: ${race.fastestLap}</p>
+        <p>Weather: ${race.weather}</p>
+        <div class="card-buttons">
+          <button onclick="editRace(${race.id})">Edit</button>
+          <button onclick="deleteRace(${race.id})">Delete</button>
+        </div>
+      </div>
+    `;
+    cardContainer.appendChild(card); // Appends element to container
+  }
+}
+
+function editRace(id) { // Edit function
+  console.log("Edit race with id: ", id);
+}
+
+function deleteRace(id) { // Delete function
+  console.log("Delete race with id: ", id);
+}
+
+document.addEventListener("DOMContentLoaded", function() { // Waits until HTML is loaded before executing
+  renderRaces(filteredRaces); // Initial data render
+  });
+
+/*
 const FRESH_PRINCE_URL =
   "https://upload.wikimedia.org/wikipedia/en/3/33/Fresh_Prince_S1_DVD.jpg";
 const CURB_POSTER_URL =
@@ -95,3 +179,4 @@ function removeLastCard() {
   titles.pop(); // Remove last item in titles array
   showCards(); // Call showCards again to refresh
 }
+*/

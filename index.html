@@ -1,21 +1,72 @@
 <!doctype html>
 <html>
   <head>
-    <title>LA TV Shows | Home</title>
-    <meta name="description" content="A Catalog of Shows Set in Los Angeles" />
+    <title>F1 Race Archive</title>
+    <meta name="description" content="A Catalog of F1 Races" />
     <link rel="stylesheet" href="style.css" />
     <script type="text/javascript" src="scripts.js"></script>
   </head>
 
   <body>
     <header class="main-header">
-      <h1 class="title">LA TV Shows</h1>
+      <h1 class="title">F1 Race Archive</h1>
+      <p class="subtitle">A curated catalog of Formula 1 races to browse race data, search key details, filter, sort, and manage entries with CRUD functionality</p>
     </header>
+    
+    <main>
+      <section class="controls">
+        <input type="text" id="search-input" placeholder="Search by..."/>
+        
+        <select id="season-filter">
+          <option value="all">All Seasons</option>
+        </select>
+
+        <select id="circuit-filter">
+          <option value="all">All Circuits</option>
+        </select>
+
+        <select id="weather-filter">
+          <option value="all">All Weather</option>
+        </select>
+
+        <select id="sort-select">
+          <option value="default">Sort By</option>
+          <option value="season-ascending">Season (Oldest First)</option>
+          <option value="season-descending">Season (Newest First)</option>
+        </select>
+      </section>
+
+      <section>
+        <h2 class="section-title">Race Catalog</h2>
+        <div id="card-container"></div>
+      </section>
+
+      <section class="form-section">
+        <h2>Add Race</h2>
+        <form id="race-form">
+          <input type="hidden" id="race-id"/>
+          <input type="number" id="season" placeholder="Season" required/>
+          <input type="date" id="date" placeholder="Date" required/>
+          <input type="text" id="race-name" placeholder="Race Name" required/>
+          <input type="text" id="circuit" placeholder="Circuit" required/>
+          <input type="text" id="country" placeholder="Country" required/>
+          <input type="text" id="winner-driver" placeholder="Winning Driver" required/>
+          <input type="text" id="winner-team" placeholder="Winning Team" required/>
+          <input type="number" id="laps" placeholder="Laps" required/>
+          <input type="text" id="fastest-lap" placeholder="Fastest Lap" required/>
+          <input type="text" id="weather" placeholder="Weather" required/>
+          <button type="submit">Save Race</button>
+        </form>
+      </section>
+
+    </main>
+
+    <!--
     <div id="card-container"></div>
     <div class="card" style="display: none">
       <div class="card-content">
-        <h2>TV Show Title</h2>
-        <img src="" alt="TV Show Poster" />
+        <h2>F1 Race Data</h2>
+        <img src="" alt="Race Data" />
         <ul>
           <li>Bullet Point 1</li>
           <li>Bullet Point 2</li>
@@ -27,5 +78,7 @@
       <button onclick="quoteAlert()">Get A Quote!</button>
       <button onclick="removeLastCard()">Remove A Card!</button>
     </div>
+    -->
+
   </body>
 </html>
