@@ -50,6 +50,7 @@ const races = [ // Array of objects
   },
   {id: 3,
     season: 2022,
+    date: "2022-09-18",
     raceName: "Japanese Grand Prix",
     circuit: "Suzuka",
     country: "Japan",
@@ -67,6 +68,16 @@ function renderRaces(raceArray) { // Renders array
   const cardContainer = document.getElementById("card-container");
   cardContainer.innerHTML = ""; // Clears exisitng content
 
+  if(raceArray.length === 0) {
+    cardContainer.innerHTML = `
+      <div class="no-result">
+        <h3>No Races Found</h3>
+        <p>Adjust filters or add a new race</p>
+      </div>
+    `;
+    return;
+  }
+
   for (let i = 0; i < raceArray.length; i++) { // Iterates through array
     const race = raceArray[i];
 
@@ -78,11 +89,12 @@ function renderRaces(raceArray) { // Renders array
       <div class="card-content">
         <h3>${race.season} ${race.raceName}</h3>
         <p>Date: ${race.date}</p>
+        <p>Country: ${race.country}</p>
         <p>Circuit: ${race.circuit}</p>
-        <p>Winner: ${race.winnerDriver}</p>
-        <p>Team: ${race.winnerTeam}</p>
+        <p>Winning Driver: ${race.winnerDriver}</p>
+        <p>Winning Team: ${race.winnerTeam}</p>
         <p>Laps: ${race.laps}</p>
-        <p>Fastest: ${race.fastestLap}</p>
+        <p>Fastest Lap: ${race.fastestLap}</p>
         <p>Weather: ${race.weather}</p>
         <div class="card-buttons">
           <button onclick="editRace(${race.id})">Edit</button>
@@ -94,17 +106,271 @@ function renderRaces(raceArray) { // Renders array
   }
 }
 
+function getUniqueValues(key) { // Helper function to pull dropdown values
+  const values = [];
+
+  for(let i = 0; i < races.length; i++) {
+    const value = races[i][key];
+    if(!values.includes(value)) {
+      values.push(value);
+    }
+  }
+  return values;
+}
+
+function renderDropdownOptions() {
+  const seasonFilter = document.getElementById("season-filter");
+  const circuitFilter = document.getElementById("circuit-filter");
+  const weatherFilter = document.getElementById("weather-filter");
+
+  const seasons = getUniqueValues("season");
+  const circuits = getUniqueValues("circuit");
+  const weatherTypes = getUniqueValues("weather");
+
+  seasonFilter.innerHTML = '<option value="all">All Seasons</option>';
+  circuitFilter.innerHTML = '<option value="all">All Circuits</option>';
+  weatherFilter.innerHTML = '<option value="all">All Weather</option>';
+
+  for(let i = 0; i < seasons.length; i++) {
+    seasonFilter.innerHTML += `<option value = "${seasons[i]}">${seasons[i]}</option>`;
+  }
+
+  for(let i = 0; i < circuits.length; i++) {
+    circuitFilter.innerHTML += `<option value = "${circuits[i]}">${circuits[i]}</option>`;
+  }
+
+  for(let i = 0; i < weatherTypes.length; i++) {
+    weatherFilter.innerHTML += `<option value = "${weatherTypes[i]}">${weatherTypes[i]}</option>`;
+  }
+
+}
+
+function applyFiltersAndSort() {
+  const seasonValue = document.getElementById("season-filter").value;
+  const circuitValue = document.getElementById("circuit-filter").value;
+  const weathervalue = document.getElementById("weather-filter").value;
+  const sortValue = document.getElementById("sort-select").value;
+
+  let result = [...races];
+
+  if(seasonValue !== "all") {
+    result = result.filter(function(race) {
+      return race.season === Number(seasonValue);
+    });
+  }
+
+  if(circuitValue !== "all") {
+    result = result.filter(function(race) {
+      return race.circuit === circuitValue;
+    });
+  }
+
+  if(weathervalue !== "all") {
+    result = result.filter(function(race){
+      return race.weather === weathervalue;
+    });
+  }
+
+  if(sortValue === "season-ascending") {
+    result.sort(function(a, b) {
+      return a.season - b.season;
+    });
+  } else if(sortValue === "season-descending") {
+    result.sort(function(a, b) {
+      return b.season - a.season;
+    });
+  }
+
+  filteredRaces = result;
+  renderRaces(filteredRaces);
+}
+
 function editRace(id) { // Edit function
-  console.log("Edit race with id: ", id);
+  let selectedRace = null;
+
+  for(let i = 0; i < races.length; i++) {
+    if(races[i].id === id) {
+      selectedRace = races[i];
+      break;
+    }
+  }
+
+  if(selectedRace === null) {
+    console.log("Race not found");
+    return;
+  }
+
+  document.getElementById("race-id").value = selectedRace.id;
+  document.getElementById("season").value = selectedRace.season;
+  document.getElementById("date").value = selectedRace.date;
+  document.getElementById("race-name").value = selectedRace.raceName;
+  document.getElementById("circuit").value = selectedRace.circuit;
+  document.getElementById("country").value = selectedRace.country;
+  document.getElementById("winner-driver").value = selectedRace.winnerDriver;
+  document.getElementById("winner-team").value = selectedRace.winnerTeam;
+  document.getElementById("laps").value = selectedRace.laps;
+  document.getElementById("fastest-lap").value = selectedRace.fastestLap;
+  document.getElementById("weather").value = selectedRace.weather;
+
+  const formTitle = document.getElementById("form-title");
+  const formButton = document.getElementById("form-button");
+
+  if(formTitle) {
+    formTitle.textContent = "Edit Race";
+  }
+
+  if(formButton) {
+    formButton.textContent = "Update Race";
+  }
+
+  console.log("Edited race with id: ", id);
+}
+
+function updateRace() {
+  const raceId = Number(document.getElementById("race-id").value);
+  const season = Number(document.getElementById("season").value);
+  const date = document.getElementById("date").value;
+  const raceName = document.getElementById("race-name").value;
+  const circuit = document.getElementById("circuit").value;
+  const country = document.getElementById("country").value;
+  const winnerDriver = document.getElementById("winner-driver").value;
+  const winnerTeam = document.getElementById("winner-team").value;
+  const laps = Number(document.getElementById("laps").value);
+  const fastestLap = document.getElementById("fastest-lap").value;
+  const weather = document.getElementById("weather").value;
+
+  for(let i = 0; i < races.length; i++) {
+    if(races[i].id === raceId) {
+      races[i].season = season;
+      races[i].date = date;
+      races[i].raceName = raceName;
+      races[i].circuit = circuit;
+      races[i].country = country;
+      races[i].winnerDriver = winnerDriver;
+      races[i].winnerTeam = winnerTeam;
+      races[i].laps = laps;
+      races[i].fastestLap = fastestLap;
+      races[i].weather = weather;
+      break;
+    }
+  }
+
+  renderDropdownOptions();
+  applyFiltersAndSort();
+
+  document.getElementById("race-form").reset();
+  document.getElementById("race-id").value = "";
+
+  const formTitle = document.getElementById("form-title");
+  const formButton = document.getElementById("form-button");
+
+  if(formTitle) {
+    formTitle.textContent = "Add Race";
+  }
+
+  if(formButton) {
+    formButton.textContent = "Save Race";
+  }
+
+  console.log("Updated race with id: ", raceId);
 }
 
 function deleteRace(id) { // Delete function
-  console.log("Delete race with id: ", id);
+  const confirmed = confirm("You are about to delete this race, are you sure?");
+  
+  if(!confirmed) {
+    return;
+  }
+
+  const updatedRaces = races.filter(function(race) {
+    return race.id !== id;
+  });
+
+  races.length = 0;
+  races.push(...updatedRaces);
+  renderDropdownOptions();
+  applyFiltersAndSort();
+  console.log("Deleted race with id: ", id);
+}
+
+function generateId() {
+  if(races.length === 0) {
+    return 1;
+  }
+
+  let maxId = races[0].id;
+
+  for(let i = 1; i < races.length; i++) {
+    if(races[i].id > maxId) {
+      maxId = races[i].id;
+    }
+  }
+  return maxId + 1;
+}
+
+function addRace() {
+  const season = document.getElementById("season").value;
+  const date = document.getElementById("date").value;
+  const raceName = document.getElementById("race-name").value;
+  const country = document.getElementById("country").value;
+  const circuit = document.getElementById("circuit").value;
+  const winnerDriver = document.getElementById("winner-driver").value;
+  const winnerTeam = document.getElementById("winner-team").value;
+  const laps = document.getElementById("laps").value;
+  const fastestLap = document.getElementById("fastest-lap").value;
+  const weather = document.getElementById("weather").value;
+
+  const newRace = {
+    id: generateId(),
+    season: Number(season), // Converts type
+    date, raceName, circuit, country, winnerDriver, winnerTeam,
+    laps: Number(laps),
+    fastestLap, weather
+  };
+
+  races.push(newRace); // Adds race to main array
+  renderDropdownOptions();
+  applyFiltersAndSort();
+  document.getElementById("race-form").reset();
+  document.getElementById("race-id").value = "";
+
+  const formTitle = document.getElementById("form-title");
+  const formButton = document.getElementById("form-button");
+
+  if(formTitle) {
+    formTitle.textContent = "Add Race";
+  }
+
+  if(formButton) {
+    formButton.textContent = "Save Race";
+  }
+
+  console.log("Race added: ", newRace);
 }
 
 document.addEventListener("DOMContentLoaded", function() { // Waits until HTML is loaded before executing
   renderRaces(filteredRaces); // Initial data render
-  });
+  renderDropdownOptions();
+  
+  const form = document.getElementById("race-form");
+  form.addEventListener("submit", function (event)  {
+    event.preventDefault(); // Stops page from reloading
+    const raceId = document.getElementById("race-id").value;
+
+    if(raceId === "") {
+      addRace();
+    } else {
+      updateRace();
+    }
+
+    renderDropdownOptions();
+    applyFiltersAndSort();
+  }); 
+  document.getElementById("season-filter").addEventListener("change", applyFiltersAndSort);
+  document.getElementById("circuit-filter").addEventListener("change", applyFiltersAndSort);
+  document.getElementById("weather-filter").addEventListener("change", applyFiltersAndSort);
+  document.getElementById("sort-select").addEventListener("change", applyFiltersAndSort);
+});
 
 /*
 const FRESH_PRINCE_URL =
