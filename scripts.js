@@ -25,22 +25,58 @@
 
 const races = [ // Array of objects
   {id: 1, // Primary key
-    season: 2021,
-    date: "2021-11-14",
-    raceName: "Sao Paulo Grand Prix",
-    circuit: "Interlagos",
-    country: "Brazil",
-    winnerDriver: "Lewis Hamilton",
-    winnerTeam: "Mercedes",
-    laps: 71,
-    fastestLap: "1:11.010",
+    season: 2020,
+    date: "2020-09-06",
+    raceName: "Italian Grand Prix",
+    circuit: "Monza",
+    country: "Italy",
+    winnerDriver: "Pierre Gasly",
+    winnerTeam: "AlphaTauri",
+    laps: 53,
+    fastestLap: "1:22.746",
     weather: "Dry",
   },
   {id: 2,
+    season: 2020,
+    date: "2020-12-06",
+    raceName: "Sakhir Grand Prix",
+    circuit: "Bahrain Outer Circuit",
+    country: "Bahrain",
+    winnerDriver: "Sergio Perez",
+    winnerTeam: "Racing Point",
+    laps: 87,
+    fastestLap: "0:55.404",
+    weather: "Dry",
+  },
+  {id: 3,
+    season: 2020,
+    date: "2020-11-15",
+    raceName: "Turkish Grand Prix",
+    circuit: "Istanbul Park",
+    country: "Turkey",
+    winnerDriver: "Lewis Hamilton",
+    winnerTeam: "Mercedes",
+    laps: 58,
+    fastestLap: "1:36.806",
+    weather: "Wet",
+  },
+  {id: 4,
+    season: 2021,
+    date: "2021-12-12",
+    raceName: "Abu Dhabi Grand Prix",
+    circuit: "Yas Marina Circuit",
+    country: "UAE",
+    winnerDriver: "Max Verstappen",
+    winnerTeam: "Red Bull Racing",
+    laps: 58,
+    fastestLap: "1:26.103",
+    weather: "Dry",
+  },
+  {id: 5,
     season: 2021,
     date: "2021-07-18",
     raceName: "British Grand Prix",
-    circuit: "Silverstone",
+    circuit: "Silverton",
     country: "United Kingdom",
     winnerDriver: "Lewis Hamilton",
     winnerTeam: "Mercedes",
@@ -48,9 +84,21 @@ const races = [ // Array of objects
     fastestLap: "1:28.617",
     weather: "Dry",
   },
-  {id: 3,
+  {id: 6,
+    season: 2021,
+    date: "2021-08-01",
+    raceName: "Hungarian Grand Prix",
+    circuit: "Hungaroring",
+    country: "Hungary",
+    winnerDriver: "Esteban Ocon",
+    winnerTeam: "Alpine",
+    laps: 70,
+    fastestLap: "1:18.394",
+    weather: "Mixed",
+  },
+  {id: 7,
     season: 2022,
-    date: "2022-09-18",
+    date: "2022-10-09",
     raceName: "Japanese Grand Prix",
     circuit: "Suzuka",
     country: "Japan",
@@ -59,6 +107,66 @@ const races = [ // Array of objects
     laps: 28,
     fastestLap: "1:44.411",
     weather: "Wet",
+  },
+  {id: 8,
+    season: 2022,
+    date: "2022-11-13",
+    raceName: "Sao Paulo Grand Prix",
+    circuit: "Interlagos",
+    country: "Brazil",
+    winnerDriver: "George Russell",
+    winnerTeam: "Mercedes",
+    laps: 71,
+    fastestLap: "1:13.785",
+    weather: "Dry",
+  },
+  {id: 9,
+    season: 2022,
+    date: "2022-05-29",
+    raceName: "Monaco Grand Prix",
+    circuit: "Monte Carlo",
+    country: "Monaco",
+    winnerDriver: "Sergio Perez",
+    winnerTeam: "Red Bull Racing",
+    laps: 64,
+    fastestLap: "1:16.232",
+    weather: "Wet",
+  },
+  {id: 10,
+    season: 2023,
+    date: "2023-08-27",
+    raceName: "Dutch Grand Prix",
+    circuit: "Zandvoort",
+    country: "Netherlans",
+    winnerDriver: "Max Verstappen",
+    winnerTeam: "Red Bull Racing",
+    laps: 72,
+    fastestLap: "1:13.837",
+    weather: "Mixed",
+  },
+  {id: 11,
+    season: 2023,
+    date: "2023-11-18",
+    raceName: "Las Vegas Grand Prix",
+    circuit: "Las Vegas Strip Circuit",
+    country: "USA",
+    winnerDriver: "Max Verstappen",
+    winnerTeam: "Red Bull Racing",
+    laps: 50,
+    fastestLap: "1:35.490",
+    weather: "Dry",
+  },
+  {id: 12,
+    season: 2023,
+    date: "2023-09-03",
+    raceName: "Italian Grand Prix",
+    circuit: "Monza",
+    country: "Italy",
+    winnerDriver: "Max Verstappen",
+    winnerTeam: "Red Bull Racing",
+    laps: 51,
+    fastestLap: "1:25.072",
+    weather: "Dry",
   }
 ];
 
@@ -68,7 +176,7 @@ function renderRaces(raceArray) { // Renders array
   const cardContainer = document.getElementById("card-container");
   cardContainer.innerHTML = ""; // Clears exisitng content
 
-  if(raceArray.length === 0) {
+  if(raceArray.length === 0) { // When no races are in array
     cardContainer.innerHTML = `
       <div class="no-result">
         <h3>No Races Found</h3>
@@ -78,7 +186,7 @@ function renderRaces(raceArray) { // Renders array
     return;
   }
 
-  for (let i = 0; i < raceArray.length; i++) { // Iterates through array
+  for(let i = 0; i < raceArray.length; i++) { // Iterates through array
     const race = raceArray[i];
 
     const card = document.createElement("div"); // Dynamic DOM creation
@@ -88,14 +196,14 @@ function renderRaces(raceArray) { // Renders array
     card.innerHTML = `
       <div class="card-content">
         <h3>${race.season} ${race.raceName}</h3>
-        <p>Date: ${race.date}</p>
-        <p>Country: ${race.country}</p>
-        <p>Circuit: ${race.circuit}</p>
-        <p>Winning Driver: ${race.winnerDriver}</p>
-        <p>Winning Team: ${race.winnerTeam}</p>
-        <p>Laps: ${race.laps}</p>
-        <p>Fastest Lap: ${race.fastestLap}</p>
-        <p>Weather: ${race.weather}</p>
+        <p><strong>Date: </strong>${race.date}</p>
+        <p><strong>Country: </strong>${race.country}</p>
+        <p><strong>Circuit: </strong>${race.circuit}</p>
+        <p><strong>Winning Driver: </strong>${race.winnerDriver}</p>
+        <p><strong>Winning Team: </strong>${race.winnerTeam}</p>
+        <p><strong>Laps: </strong>${race.laps}</p>
+        <p><strong>Fastest Lap: </strong>${race.fastestLap}</p>
+        <p><strong>Weather: </strong>${race.weather}</p>
         <div class="card-buttons">
           <button onclick="editRace(${race.id})">Edit</button>
           <button onclick="deleteRace(${race.id})">Delete</button>
@@ -118,7 +226,7 @@ function getUniqueValues(key) { // Helper function to pull dropdown values
   return values;
 }
 
-function renderDropdownOptions() {
+function renderDropdownOptions() {  // Dropdown Options: season, circuit, and weather
   const seasonFilter = document.getElementById("season-filter");
   const circuitFilter = document.getElementById("circuit-filter");
   const weatherFilter = document.getElementById("weather-filter");
@@ -127,11 +235,11 @@ function renderDropdownOptions() {
   const circuits = getUniqueValues("circuit");
   const weatherTypes = getUniqueValues("weather");
 
-  seasonFilter.innerHTML = '<option value="all">All Seasons</option>';
-  circuitFilter.innerHTML = '<option value="all">All Circuits</option>';
-  weatherFilter.innerHTML = '<option value="all">All Weather</option>';
+  seasonFilter.innerHTML = '<option value = "all">All Seasons</option>';  // Default position
+  circuitFilter.innerHTML = '<option value = "all">All Circuits</option>';
+  weatherFilter.innerHTML = '<option value = "all">All Weather</option>';
 
-  for(let i = 0; i < seasons.length; i++) {
+  for(let i = 0; i < seasons.length; i++) { // Populates dropdown with values and shows value choosen in dropdown box
     seasonFilter.innerHTML += `<option value = "${seasons[i]}">${seasons[i]}</option>`;
   }
 
@@ -145,7 +253,7 @@ function renderDropdownOptions() {
 
 }
 
-function applyFiltersAndSort() {
+function applyFiltersAndSort() {  // Search, Filter, and Sort
   const searchValue = document.getElementById("search-input").value.toLowerCase();
   const seasonValue = document.getElementById("season-filter").value;
   const circuitValue = document.getElementById("circuit-filter").value;
@@ -154,9 +262,10 @@ function applyFiltersAndSort() {
 
   let result = [...races];
 
+  // Search
   if(searchValue !== "") {
     result = result.filter(function(race) {
-      return (
+      return (  // Returns matching search value(s)
         race.raceName.toLowerCase().includes(searchValue) ||
         race.winnerDriver.toLowerCase().includes(searchValue) ||
         race.winnerTeam.toLowerCase().includes(searchValue)
@@ -164,6 +273,7 @@ function applyFiltersAndSort() {
     });
   }
 
+  // Filters
   if(seasonValue !== "all") {
     result = result.filter(function(race) {
       return race.season === Number(seasonValue);
@@ -182,6 +292,7 @@ function applyFiltersAndSort() {
     });
   }
 
+  // Sort
   if(sortValue === "season-ascending") {
     result.sort(function(a, b) {
       return a.season - b.season;
@@ -210,7 +321,7 @@ function editRace(id) { // Edit function
     console.log("Race not found");
     return;
   }
-
+  // Populates add form with exisiting race data
   document.getElementById("race-id").value = selectedRace.id;
   document.getElementById("season").value = selectedRace.season;
   document.getElementById("date").value = selectedRace.date;
@@ -233,7 +344,7 @@ function editRace(id) { // Edit function
   if(formButton) {
     formButton.textContent = "Update Race";
   }
-
+  document.getElementById("race-form").scrollIntoView({ behavior: "smooth" });
   console.log("Edited race with id: ", id);
 }
 
@@ -250,7 +361,7 @@ function updateRace() {
   const fastestLap = document.getElementById("fastest-lap").value;
   const weather = document.getElementById("weather").value;
 
-  for(let i = 0; i < races.length; i++) {
+  for(let i = 0; i < races.length; i++) { // Updates variables
     if(races[i].id === raceId) {
       races[i].season = season;
       races[i].date = date;
@@ -319,7 +430,7 @@ function generateId() {
   return maxId + 1;
 }
 
-function addRace() {
+function addRace() {  // Add function
   const season = document.getElementById("season").value;
   const date = document.getElementById("date").value;
   const raceName = document.getElementById("race-name").value;
