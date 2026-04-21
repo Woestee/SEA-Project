@@ -146,12 +146,23 @@ function renderDropdownOptions() {
 }
 
 function applyFiltersAndSort() {
+  const searchValue = document.getElementById("search-input").value.toLowerCase();
   const seasonValue = document.getElementById("season-filter").value;
   const circuitValue = document.getElementById("circuit-filter").value;
   const weathervalue = document.getElementById("weather-filter").value;
   const sortValue = document.getElementById("sort-select").value;
 
   let result = [...races];
+
+  if(searchValue !== "") {
+    result = result.filter(function(race) {
+      return (
+        race.raceName.toLowerCase().includes(searchValue) ||
+        race.winnerDriver.toLowerCase().includes(searchValue) ||
+        race.winnerTeam.toLowerCase().includes(searchValue)
+      );
+    });
+  }
 
   if(seasonValue !== "all") {
     result = result.filter(function(race) {
@@ -366,6 +377,7 @@ document.addEventListener("DOMContentLoaded", function() { // Waits until HTML i
     renderDropdownOptions();
     applyFiltersAndSort();
   }); 
+  document.getElementById("search-input").addEventListener("input", applyFiltersAndSort);
   document.getElementById("season-filter").addEventListener("change", applyFiltersAndSort);
   document.getElementById("circuit-filter").addEventListener("change", applyFiltersAndSort);
   document.getElementById("weather-filter").addEventListener("change", applyFiltersAndSort);
